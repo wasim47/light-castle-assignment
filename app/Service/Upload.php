@@ -38,9 +38,9 @@ class Upload
 				
 					$path = public_path('import-directory').'/'.$importfiles;	
 						$collection = (new FastExcel)->import($path);			////////// Get Excel data in collection
-						$collection1 = collect($collection)->sortBy('timestamp');
+						$collectedData = collect($collection)->sortBy('timestamp');
 						
-						$grouped = $collection1->groupBy('group');					
+						$grouped = $collectedData->groupBy('group');					
 						$jsonoutput =  $grouped->toJson(JSON_PRETTY_PRINT);		////////// Json Data formatting
 						printf("<pre>%s</pre>", $jsonoutput);
 				}
