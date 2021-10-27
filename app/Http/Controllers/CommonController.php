@@ -3,10 +3,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use DB;
-use Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Collection;
+use App\Service\Upload;
 
 class CommonController extends Controller
 {
@@ -14,20 +13,29 @@ class CommonController extends Controller
        
     }
 	
-	public function index(Request $req)
-    {
-		
+	/////////////////  Action with service provide and class ////////////////////
+	public function index(Upload $uploadObject)
+    {		
+		return view('upload-template');
+    }
+	
+	public function import(Upload $uploadObject)
+    {		
+		if (request()->isMethod('POST')) {
+    		return $uploadObject->store();
+		}
+		else{
+			return redirect()->back()->with('error','Post method not supported');
+		}
+    }
+	
+	
+	/////////////////  Action with simple controller ////////////////////
+	/*public function getView(Request $req)
+    {		
     	return view('upload-template');
     }
-	
-	public function sampleFileDownload(Request $req)
-    {
-		$getFile = $req->file_names.'.csv';		
-    	$filePath = public_path("samplefiles/".$getFile);		
-    	$headers = ['Content-Type: application/csv'];
-    	return response()->download($filePath, $getFile, $headers);
-    }
-	
+		
 	
 	public function import(Request $req)
     {
@@ -67,6 +75,6 @@ class CommonController extends Controller
 		else{
 			return redirect()->back()->with('error','Please select excel file');
 		}
-    }
+    }*/
 	
 }
